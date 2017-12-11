@@ -103,11 +103,11 @@
     "cordova-plugin-googleplus": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-googleplus"
+            "id": "cordova-plugin-googleplus@^5.1.1"
         },
         "is_top_level": true,
         "variables": {
-            "REVERSED_CLIENNT_ID": "com.googleusercontent.apps.291100550318-svo1bs2lov8loea9djc2ca1c6kt2ac2g"
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.849545958903-jig4k5nql1jdqi7grop5fdiem95luagj"
         }
     },
     "cordova-plugin-nativestorage": {
@@ -124,6 +124,16 @@
             "id": "cordova-plugin-nativegeocoder"
         },
         "is_top_level": true,
+        "variables": {
+            "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service"
+        }
+    },
+    "cordova-plugin-add-swift-support": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-add-swift-support@1.7.0"
+        },
+        "is_top_level": false,
         "variables": {}
     }
 }

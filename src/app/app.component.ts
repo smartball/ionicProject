@@ -20,7 +20,7 @@ import { MapDirectionPage } from '../pages/map-direction/map-direction';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage:any = MapDirectionPage;
+  rootPage:any = LoginPage;
   pages: Array<{title: string, component: any}>;
   constructor(public platform: Platform, 
     public statusBar: StatusBar, 

@@ -5,8 +5,11 @@ import { App, MenuController, ModalController } from 'ionic-angular';
 
 import { Geolocation } from '@ionic-native/geolocation';
 
-import { Observable } from 'rxjs/Observable';
+
+
 import { Storage } from '@ionic/storage';
+import { MapDirectionPage } from '../map-direction/map-direction';
+import { GoogleMapsEvent } from 'ionic-native';
 
 declare var google: any;
 
@@ -43,7 +46,9 @@ export class HomePage {
     private modal: ModalController) {
 
   }
-
+  onLoadUser(name: DoubleRange){
+    this.navCtrl.setRoot(MapDirectionPage,{userName:name});
+  }
   generateTopics() {
     this.topics = [
       'USA',
@@ -100,7 +105,7 @@ export class HomePage {
           scaleControl: true,
           center: {lat: 13.75633, lng: 100.50177}
         });
-
+    
     const geocoder = new google.maps.Geocoder();
     document.getElementById('submit').addEventListener("click",()=>{
       this.geocodeAddress(geocoder,map)
@@ -129,22 +134,7 @@ export class HomePage {
     }, 200);
   }
   
-  ionViewWillLoad(){
-    this.afAuth.authState.subscribe(data => {
-      if(data.email && data.uid){
-      this.toast.create({
-        message: 'Welcome to APP_NAME, ${data.email}',
-        duration: 3000
-      }).present();
-    }else{
-      this.toast.create({
-        message: 'Could not find authentication detail',
-        duration: 3000
-      }).present();
-    }
-    });
-
-  }
+  
   
 
 }

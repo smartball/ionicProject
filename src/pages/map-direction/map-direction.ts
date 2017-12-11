@@ -1,6 +1,8 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform} from 'ionic-angular';
+import { NavParams } from 'ionic-angular/navigation/nav-params';
+import { LatLng } from '@ionic-native/google-maps';
 
 declare var google;
 /**
@@ -17,42 +19,87 @@ declare var google;
 })
 export class MapDirectionPage {
 
-  @ViewChild('map') mapElement: ElementRef;
-  map: any;
-  start = 'chicago, il';
-  end = 'chicago, il';
-  directionsService = new google.maps.DirectionsService;
-  directionsDisplay = new google.maps.DirectionsRenderer;
-
-  constructor(public navCtrl: NavController) {
-
-  }
-
-  ionViewDidLoad(){
-    this.initMap();
-  }
-
-  initMap() {
-    this.map = new google.maps.Map(this.mapElement.nativeElement, {
-      zoom: 7,
-      center: {lat: 41.85, lng: -87.65}
+  	@ViewChild('map') mapRef : ElementRef;
+    name: DoubleRange;
+    start:string;
+    end:string;
+	map:any;
+  constructor(public navCtrl: NavController, public navParams: NavParams , public plt : Platform) {
+    this.plt.ready().then(() =>{
+       this.start = 'penn station, new york, ny'; //{lat:xxxx,lng:xxxxxx}
+       this.end = 'grand central station, new york, ny';
+      this.showMap();
     });
-
-    this.directionsDisplay.setMap(this.map);
+  }
+  ngOnInit(){
+    this.name = this.navParams.get('userName');
   }
 
-  calculateAndDisplayRoute() {
-    this.directionsService.route({
-      origin: this.start,
-      destination: this.end,
-      travelMode: 'DRIVING'
-    }, (response, status) => {
-      if (status === 'OK') {
-        this.directionsDisplay.setDirections(response);
-      } else {
-        window.alert('Directions request failed due to ' + status);
+  ionViewWillEnter(){
+  	this.showMap();
+  }
+
+  showMap(){
+    var markerArray = [];
+    //declear>>>
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    //declear<<<
+    const options = {
+       zoom: 13,
+       center: {lat: 40.771, lng: -73.974}
+    };
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+    directionsDisplay.setMap(this.map);
+
+    // Instantiate an info window to hold step text.
+    var stepDisplay = new google.maps.InfoWindow;
+
+    // Display the route between the initial start and end selections.
+    this.calculateAndDisplayRoute(directionsDisplay, directionsService, markerArray, stepDisplay, this.map);
+  }
+  calculateAndDisplayRoute(directionsDisplay, directionsService,markerArray, stepDisplay, map) {
+        // First, remove any existing markers from the map.
+        for (var i = 0; i < markerArray.length; i++) {
+          markerArray[i].setMap(null);
+        }
+
+        // Retrieve the start and end locations and create a DirectionsRequest using
+        // WALKING directions.
+        directionsService.route({
+          origin: 'Bangkok',
+          destination: this.name,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          // Route the directions and pass the response to a function to create
+          // markers for each step.
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            //showSteps(response, markerArray, stepDisplay, map);
+            //>>>>
+            var myRoute = response.routes[0].legs[0];
+              for (var i = 0; i < myRoute.steps.length; i++) {
+                var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+                marker.setMap(map);
+                marker.setPosition(myRoute.steps[i].start_location);
+                //attachInstructionText(stepDisplay, marker, myRoute.steps[i].instructions, map);
+                //>>>
+                google.maps.event.addListener(marker, 'click', function() {
+                  // Open an info window when the marker is clicked on, containing the text
+                  // of the step.
+                  var getposition_lat = marker.getPosition().lat();
+                  var getposition_lng = marker.getPosition().lng();
+                  alert(JSON.stringify(myRoute));
+                  stepDisplay.setContent(myRoute.steps[0].instructions+"<br>"+getposition_lat+"<br>"+getposition_lng+"<br>");
+                  stepDisplay.open(map, marker);
+                });
+                //>>>
+              }
+             //>>>
+          } else {
+            alert('ไม่สามารถระบุแผนที่ได้');
+          }
+        });
       }
-    });
-  }
 
 }

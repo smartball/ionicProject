@@ -25753,7 +25753,9 @@ page-home #floating-panel {
 page-login .background {
   width: 100%;
   height: 100%;
-  background-image: url("https://travel.mthai.com/app/uploads/2016/12/image003.jpg");
+  background-image: url("../assets/imgs/esa.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 page-login .scroll-content {

@@ -11,7 +11,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { CloudModule, CloudSettings} from '@ionic/cloud-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
-
+import {  GoogleMaps } from '@ionic-native/google-maps';
 
 
 import { MyApp } from './app.component';
@@ -82,6 +82,7 @@ firebase.initializeApp({
     SplashScreen,
     Geolocation,
     NativeGeocoder,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Facebook,
     NativeStorage,
