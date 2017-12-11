@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content *ngIf='userReady' parallax>
+  <div class="bgz">
+  	
+  </div>
+  <div class="main-cnt">
+  	<img class="dp" [src]="user.picture"/>
+  	
+  	
+  	
+  </div>
+  <ion-card>
+    
+    <ion-card-content>
+      <ion-card-title>
+        Welcome {{user.name}}!
+        </ion-card-title>
+      <p>
+        Your gender is: {{user.gender}}
+      </p>
+    </ion-card-content>
+  </ion-card>
+  <ion-row>
+    <ion-col>
+      <button ion-button block (click)="doFbLogout()">Logout</button>
+    </ion-col>
+  </ion-row>
+</ion-content>
