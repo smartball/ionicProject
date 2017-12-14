@@ -1,14 +1,9 @@
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Profile } from '../../models/profile'
-import firebase from 'firebase';
-import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 import { Facebook } from '@ionic-native/facebook';
 import { NativeStorage } from '@ionic-native/native-storage';
-import { FacebookAuth, User } from '@ionic/cloud-angular';
 
 
 /**
@@ -33,13 +28,9 @@ export class ProfilePage {
   
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private afDatabase: AngularFireDatabase,
     public navCtrl: NavController,
     public fb: Facebook, 
     public navParams: NavParams,
-    private users: User,
-    private facebooks: FacebookAuth,
     public nativeStorage: NativeStorage) {
   }
 

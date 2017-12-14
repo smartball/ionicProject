@@ -44,7 +44,7 @@ export class LoginPage {
           picture: user.picture
         })
         .then(() => {
-          nav.setRoot(HomePage);
+          nav.push(UserPage);
         },(error) => {
           console.log(error);
         })
@@ -53,6 +53,8 @@ export class LoginPage {
       console.log(error);
     });
   }
+
+
 
   skip(){
     this.navCtrl.setRoot(HomePage);

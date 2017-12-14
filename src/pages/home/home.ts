@@ -1,20 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { App, MenuController, ModalController } from 'ionic-angular';
+import { NavController, NavParams} from 'ionic-angular';
+import { App, ModalController } from 'ionic-angular';
 
-import { Geolocation } from '@ionic-native/geolocation';
-
-
-
-import { Storage } from '@ionic/storage';
 import { MapDirectionPage } from '../map-direction/map-direction';
-import { GoogleMapsEvent } from 'ionic-native';
 
 declare var google: any;
-
-
-
 
 @Component({
   selector: 'page-home',
@@ -39,8 +29,6 @@ export class HomePage {
   regionals: any = [];
   currentregional: any;
   constructor(
-    private afAuth: AngularFireAuth, 
-    private toast: ToastController, 
     public navCtrl: NavController,
     public app: App, 
     public navParams: NavParams,
@@ -118,7 +106,7 @@ export class HomePage {
         var getposition_lat;
         var getposition_lng;
         var address = (<HTMLInputElement>document.getElementById('address')).value;
-        geocoder.geocode({'address': address}, function(results, status) {
+        geocoder.geocode({'address': address}, (results, status) => {
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
@@ -133,13 +121,15 @@ export class HomePage {
             var infoWindowContent = '<div id="content"><h1 id="firstHeading" class="firstHeading">Test</h1></div>';
             var infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent+results[0].formatted_address+'<button id = "myid" style="background-color:red;color:white;width:100%;height:30px;font-size:16px;">Test</button>'
-            });
+            })
+
+            var sendLatLng = getposition_lat+','+getposition_lng;
             google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
               document.getElementById('myid').addEventListener('click', () => {
-                this.navCtrl.push(MapDirectionPage);
-
+                 this.navCtrl.push(MapDirectionPage,{userName:sendLatLng});
               });
             });
+
             infoWindow.open(this.map, marker);
             
           } else {
@@ -147,6 +137,8 @@ export class HomePage {
           }
             
         });
+
+        // save 
             
            
             

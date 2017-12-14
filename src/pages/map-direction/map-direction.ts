@@ -1,8 +1,7 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { NavController, Platform} from 'ionic-angular';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
-import { LatLng } from '@ionic-native/google-maps';
 
 declare var google;
 /**

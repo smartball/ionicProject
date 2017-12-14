@@ -14,18 +14,22 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import {  GoogleMaps } from '@ionic-native/google-maps';
 
 
+import { HttpModule } from '@angular/http';
+
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { UserPage } from '../pages/user/user';
 import { ProfilePage } from '../pages/profile/profile';
+import { MapPage } from '../pages/map/map';
+
 import { MapDirectionPage } from '../pages/map-direction/map-direction';
 import { GooglePlus } from '@ionic-native/google-plus';
 
 import { FIREBASE_CONFIG } from './app.firebase.config';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { GeocoderProvider } from '../providers/geocoder/geocoder';
+
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -54,13 +58,15 @@ firebase.initializeApp({
     ListPage,
     ProfilePage,
     UserPage,
-    MapDirectionPage
+    MapDirectionPage,
+    MapPage
    
 
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    HttpModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
@@ -74,7 +80,8 @@ firebase.initializeApp({
     ListPage,
     ProfilePage,
     UserPage,
-    MapDirectionPage
+    MapDirectionPage,
+    MapPage
 
   ],
   providers: [
@@ -86,8 +93,7 @@ firebase.initializeApp({
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Facebook,
     NativeStorage,
-    GooglePlus,
-    GeocoderProvider
+    GooglePlus
   ]
 })
 export class AppModule {}
