@@ -23,6 +23,7 @@ declare var google: any;
 export class HomePage {
   items;
   topics: string[];
+
   @ViewChild('map') mapRef: ElementRef;
   @ViewChild('searchbar', { read: ElementRef }) searchbar: ElementRef;
   addressElement: HTMLInputElement = null;
@@ -44,10 +45,10 @@ export class HomePage {
     public app: App, 
     public navParams: NavParams,
     private modal: ModalController) {
-
+    this.navCtrl = navCtrl;
   }
   onLoadUser(name: DoubleRange){
-    this.navCtrl.setRoot(MapDirectionPage,{userName:name});
+    this.navCtrl.push(MapDirectionPage,{userName:name});
   }
   generateTopics() {
     this.topics = [
@@ -97,7 +98,7 @@ export class HomePage {
     //Location
     
 
-    const map = new google.maps.Map(document.getElementById('map'), {
+    this.map = new google.maps.Map(document.getElementById('map'), {
           zoom: 9,
           disableDoubleClickZoom: false,
           disableDefaultUI: true,
@@ -108,26 +109,51 @@ export class HomePage {
     
     const geocoder = new google.maps.Geocoder();
     document.getElementById('submit').addEventListener("click",()=>{
-      this.geocodeAddress(geocoder,map)
+      this.geocodeAddress(geocoder,this.map)
     });
     
   }
 
   geocodeAddress(geocoder, resultsMap) {
+        var getposition_lat;
+        var getposition_lng;
         var address = (<HTMLInputElement>document.getElementById('address')).value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
               map: resultsMap,
+              icon: 'assets/imgs/pin-home.png',
               position: results[0].geometry.location
+              
             });
+            marker.setMap(this.map);
+            getposition_lat = marker.getPosition().lat();
+            getposition_lng = marker.getPosition().lng();
+            var infoWindowContent = '<div id="content"><h1 id="firstHeading" class="firstHeading">Test</h1></div>';
+            var infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent+results[0].formatted_address+'<button id = "myid" style="background-color:red;color:white;width:100%;height:30px;font-size:16px;">Test</button>'
+            });
+            google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+              document.getElementById('myid').addEventListener('click', () => {
+                this.navCtrl.push(MapDirectionPage);
+
+              });
+            });
+            infoWindow.open(this.map, marker);
+            
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
+            
         });
-      }
+            
+           
+            
 
+      }
+      
+      
   resizeMap() {
     setTimeout(() => {
       google.maps.event.trigger(this.map, 'resize');
